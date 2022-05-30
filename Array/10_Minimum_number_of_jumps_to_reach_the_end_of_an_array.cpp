@@ -83,7 +83,24 @@ int minJumps(int arr[], int n)
     }
 
     return -1;
-}
+} 
+
+/* int minJumps(int arr[], int n) {
+    if (n <= 1)
+        return 0;
+
+    if (arr[0] == 0)
+        return -1;
+
+    int lastPositioin = 0 ;
+    int steps = 0;
+    while(lastPositioin != n ) {
+        int jumpNeeded = arr[lastPositioin];
+        lastPositioin = lastPositioin + jumpNeeded;
+        steps += 1;
+     }
+    return steps;
+} */
 
 // Driver program to test above function
 int main()
@@ -92,7 +109,7 @@ int main()
     int size = sizeof(arr) / sizeof(int);
 
     // Calling the minJumps function
-    cout << ("Minimum number of jumps to reach end is %d ",
+    cout << ("Minimum number of jumps to reach end is %d",
              minJumps(arr, size));
     return 0;
 }

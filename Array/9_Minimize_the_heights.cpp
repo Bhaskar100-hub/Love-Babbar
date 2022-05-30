@@ -16,89 +16,39 @@ The array can be modified as
 the largest and the smallest is 8-3 = 5. */
 
 // C++ program of above implementation
-#include<iostream>
+#include <bits/stdc++.h>
 using namespace std;
 
-// structure is used to return
-// two values from minMax()
-struct Pair
+// User function Template
+int getMinDiff(int arr[], int n, int k)
 {
-	int min;
-	int max;
-};
+    sort(arr, arr + n);
+    int ans = arr[n - 1] - arr[0]; // Maximum possible height difference
 
-struct Pair getMinMax(int arr[], int low,
-								int high)
-{
-	struct Pair minmax, mml, mmr;	
-	int mid;
-	
-	// If there is only one element
-	if (low == high)
-	{
-		minmax.max = arr[low];
-		minmax.min = arr[low];	
-		return minmax;
-	}
-	
-	// If there are two elements
-	if (high == low + 1)
-	{
-		if (arr[low] > arr[high])
-		{
-			minmax.max = arr[low];
-			minmax.min = arr[high];
-		}
-		else
-		{
-			minmax.max = arr[high];
-			minmax.min = arr[low];
-		}
-		return minmax;
-	}
-	
-	// If there are more than 2 elements
-	mid = (low + high) / 2;
-	mml = getMinMax(arr, low, mid);
-	mmr = getMinMax(arr, mid + 1, high);
-	
-	// Compare minimums of two parts
-	if (mml.min < mmr.min)
-		minmax.min = mml.min;
-	else
-		minmax.min = mmr.min;	
-	
-	// Compare maximums of two parts
-	if (mml.max > mmr.max)
-		minmax.max = mml.max;
-	else
-		minmax.max = mmr.max;	
-	
-	return minmax;
-}
+    int tempmin, tempmax;
+    tempmin = arr[0];
+    tempmax = arr[n - 1];
 
-// Driver code
-int main() {
-	int n, k;
-    int arr[n];
-    cin>>k;
-    cin>>n;
-    for(int i = 0; i<n; i++) {
-        cin>>arr[i];
+    for (int i = 1; i < n; i++) {
+        if(arr[i] - k < 0) // if on subtracting k we got negative then continue 
+        continue;
+        tempmin= min(arr[0] + k,arr[i] - k); // Minimum element when we
+                                                // add k to whole array
+        tempmax = max(arr[i - 1] + k, arr[n - 1] - k); // Maximum element when we
+                                                         // subtract k from whole array
+        ans = min(ans, tempmax - tempmin); 
     }
-	
-	struct Pair minmax = getMinMax(arr, 0, n - 1);
-
-    /* for(int i=0; i<n; i++) {
-        if((arr[i]-k)<minmax.max && (arr[i]-k)>minmax.min) {
-            minmax.max = arr[i]-k;
-        }
-        if((arr[i]+k)>minmax.min && (arr[i]+k)<minmax.max) {
-            minmax.min = arr[i]+k;
-        }
-    } */
-
-    cout<<((minmax.max-k)-(minmax.min+k));
-
-	return 0;
+    return ans;
 }
+
+// Driver Code Starts
+int main()
+{
+    int k = 6, n = 6;
+    int arr[n] = { 7, 4, 8, 8, 8, 9 };
+    int ans = getMinDiff(arr, n, k);
+    cout << ans;
+}
+
+// Time Complexity: O(nlogn)
+// Auxiliary Space: O(n)
